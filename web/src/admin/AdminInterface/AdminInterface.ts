@@ -110,17 +110,21 @@ export class AdminInterface extends AuthenticatedInterface {
         });
     }
 
-    async firstUpdated(): Promise<void> {
+    firstUpdated(): void {
         configureSentry(true);
-        this.user = await me();
 
-        const canAccessAdmin =
-            this.user.user.isSuperuser ||
-            // TODO: somehow add `access_admin_interface` to the API schema
-            this.user.user.systemPermissions.includes("access_admin_interface");
-        if (!canAccessAdmin && this.user.user.pk > 0) {
-            window.location.assign("/if/user/");
-        }
+        me().then((session) => {
+            this.user = session;
+
+            const canAccessAdmin =
+                this.user.user.isSuperuser ||
+                // TODO: somehow add `access_admin_interface` to the API schema
+                this.user.user.systemPermissions.includes("access_admin_interface");
+
+            if (!canAccessAdmin && this.user.user.pk > 0) {
+                window.location.assign("/if/user/");
+            }
+        });
     }
 
     render(): TemplateResult {

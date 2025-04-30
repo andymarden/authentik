@@ -1,6 +1,7 @@
-import { convertToSlug } from "@goauthentik/common/utils";
 import { AKElement } from "@goauthentik/elements/Base";
-import { FormGroup } from "@goauthentik/elements/forms/FormGroup";
+import { isSerializableControl } from "@goauthentik/elements/forms/Form";
+import type { FormGroup } from "@goauthentik/elements/forms/FormGroup";
+import { kebabCase } from "change-case";
 
 import { msg, str } from "@lit/localize";
 import { CSSResult, css } from "lit";
@@ -35,12 +36,6 @@ import PFBase from "@patternfly/patternfly/patternfly-base.css";
  *    feature.
  *
  */
-
-const isAkControl = (el: unknown): boolean =>
-    el instanceof HTMLElement &&
-    "dataset" in el &&
-    el.dataset instanceof DOMStringMap &&
-    "akControl" in el.dataset;
 
 const nameables = new Set([
     "input",
@@ -123,32 +118,32 @@ export class HorizontalFormElement extends AKElement {
         if (this.name === "slug" || this.slugMode) {
             this.querySelectorAll<HTMLInputElement>("input[type='text']").forEach((input) => {
                 input.addEventListener("keyup", () => {
-                    input.value = convertToSlug(input.value);
+                    input.value = kebabCase(input.value);
                 });
             });
         }
+
         this.querySelectorAll("*").forEach((input) => {
-            if (isAkControl(input) && !input.getAttribute("name")) {
+            if (isSerializableControl(input) && !input.getAttribute("name")) {
                 input.setAttribute("name", this.name);
                 // This is fine; writeOnly won't apply to anything built this way.
                 return;
             }
 
-            if (nameables.has(input.tagName.toLowerCase())) {
-                input.setAttribute("name", this.name);
-            } else {
-                return;
-            }
+            if (!nameables.has(input.tagName.toLowerCase())) return;
+
+            input.setAttribute("name", this.name);
 
             if (this.writeOnly && !this.writeOnlyActivated) {
-                const i = input as HTMLInputElement;
-                i.setAttribute("hidden", "true");
+                input.setAttribute("hidden", "true");
+
                 const handler = () => {
-                    i.removeAttribute("hidden");
+                    input.removeAttribute("hidden");
                     this.writeOnlyActivated = true;
-                    i.parentElement?.removeEventListener("click", handler);
+                    input.parentElement?.removeEventListener("click", handler);
                 };
-                i.parentElement?.addEventListener("click", handler);
+
+                input.parentElement?.addEventListener("click", handler);
             }
         });
     }

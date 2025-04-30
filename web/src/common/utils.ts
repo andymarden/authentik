@@ -1,4 +1,5 @@
 import { SentryIgnoredError } from "@goauthentik/common/sentry";
+import { kebabCase } from "change-case";
 
 import { CSSResult, css } from "lit";
 
@@ -18,17 +19,11 @@ export function getCookie(name: string): string {
     return cookieValue;
 }
 
-export function convertToSlug(text: string): string {
-    return text
-        .toLowerCase()
-        .replace(/ /g, "-")
-        .replace(/[^\w-]+/g, "");
-}
-
-export function isSlug(text: string): boolean {
-    const lowered = text.toLowerCase();
-    const forbidden = /([^\w-]|\s)/.test(lowered);
-    return lowered === text && !forbidden;
+/**
+ * Predicate to determine if a string is a valid route slug.
+ */
+export function isSlug(input: string): boolean {
+    return kebabCase(input) === input;
 }
 
 /**
@@ -47,18 +42,6 @@ export function truncateWords(string: string, length = 10): string {
  */
 export function truncate(string: string, length = 10): string {
     return string.length > length ? `${string.substring(0, length)}...` : string;
-}
-
-export function camelToSnake(key: string): string {
-    const result = key.replace(/([A-Z])/g, " $1");
-    return result.split(" ").join("_").toLowerCase();
-}
-
-const capitalize = (key: string) => (key.length === 0 ? "" : key[0].toUpperCase() + key.slice(1));
-
-export function snakeToCamel(key: string) {
-    const [start, ...rest] = key.split("_");
-    return [start, ...rest.map(capitalize)].join("");
 }
 
 export function groupBy<T>(objects: T[], callback: (obj: T) => string): Array<[string, T[]]> {
@@ -96,10 +79,13 @@ export const punctuation = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
 export function randomString(len: number, charset: string): string {
     const chars = [];
     const array = new Uint8Array(len);
+
     self.crypto.getRandomValues(array);
+
     for (let index = 0; index < len; index++) {
         chars.push(charset[Math.floor(charset.length * (array[index] / Math.pow(2, 8)))]);
     }
+
     return chars.join("");
 }
 
