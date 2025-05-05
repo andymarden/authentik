@@ -28,13 +28,14 @@ Depending on whether you are connecting using RDP, SSH, or VNC, the exact config
 
 The first step is to create the RAC application and provider.
 
-1. Log in as an admin to authentik, and go to the Admin interface.
-2. In the Admin interface, navigate to **Applications > Applications**.
-3. Click **Create with provider**. Follow the [instructions](../../applications/manage_apps.mdx#instructions) to create your RAC application and provider.
+1. Log in to authentik as an admin, and open the authentik Admin interface.
+2. Navigate to **Applications** > **Applications** and click **Create**.
+3. In the Admin interface, navigate to **Applications > Applications**.
+4. Click **Create with provider**. Follow the [instructions](../../applications/manage_apps.mdx#instructions) to create your RAC application and provider.
 
 ### Create RAC property mappings
 
-Next, you need to add a property mapping for each of the remote machines you want to access. Property mappings allow you to pass information to external applications, and with RAC they are used to pass the host name, IP address, and access credentials for the remote machines.
+Next, you need to add property mappings for each remote machine you want to access. Property mappings allow you to pass information to external applications, and with RAC they are used to pass the host name, IP address, and access credentials of the remote machine.
 
 1. In the Admin interface, navigate to **Customization > Property Mappings**.
 2. On the **Property Mappings** page, click **Create**.
