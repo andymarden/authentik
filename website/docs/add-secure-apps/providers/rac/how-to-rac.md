@@ -2,9 +2,11 @@
 title: Create a Remote Access Control (RAC) provider
 ---
 
-The RAC provider is a highly flexible feature for accessing remote machines. This document provides instructions for the basic creation and configuration of a RAC provider within a defined scenario.
+## Introduction
 
-Fow more information about using a RAC provider, see the [Overview](./index.md) documentation. You can also view our video on YouTube for setting up RAC.
+The RAC provider is a highly flexible feature for accessing remote machines.
+
+Fow more information about using the RAC provider, see the [Overview](./index.md) documentation. You can also view our video on YouTube for setting up RAC.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/9wahIBRV6Ts;start=22" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
@@ -12,30 +14,30 @@ Fow more information about using a RAC provider, see the [Overview](./index.md) 
 
 The RAC provider requires the deployment of the [RAC Outpost](../../outposts/index.mdx).
 
-## Overview workflow to create a RAC provider
+## Overview workflow to create an RAC provider
 
-The typical workflow to create and configure a RAC provider is to 1. create app/provider, 2. create property mappings (that define the access credentials to each remote machine), 3. create an endpoint for each remote machine you want to connect to.
+The typical workflow to create and configure a RAC provider is:
 
-Depending on whether you are connecting using RDP, SSH, or VNC, the exact configuration choices might differ, but the overall workflow applies to all RAC connections.
+1. Create an application and provider.
+2. Create property mappings (that define the access credentials to each remote machine).
+3. Create an endpoint for each remote machine you want to connect to.
 
-### Step 1. Create an application and RAC provider
+Depending on whether you are connecting using RDP, SSH, or VNC, the exact configuration choices will differ, but the overall workflow applies to all RAC connections.
 
-The first step is to create the RAC app and provider.
+### Create an application and RAC provider
+
+The first step is to create the RAC application and provider.
 
 1. Log in as an admin to authentik, and go to the Admin interface.
-
-2. In the Admin interface, navigate to **Applications -> Applications**.
-
+2. In the Admin interface, navigate to **Applications > Applications**.
 3. Click **Create with provider**. Follow the [instructions](../../applications/manage_apps.mdx#instructions) to create your RAC application and provider.
 
-### Step 2. Create RAC property mapping
+### Create RAC property mappings
 
 Next, you need to add a property mapping for each of the remote machines you want to access. Property mappings allow you to pass information to external applications, and with RAC they are used to pass the host name, IP address, and access credentials for the remote machines.
 
-1. In the Admin interface, navigate to **Customization -> Property Mappings**.
-
+1. In the Admin interface, navigate to **Customization > Property Mappings**.
 2. On the **Property Mappings** page, click **Create**.
-
 3. On the **New property mapping** box, set the following:
 
     - **Select Type**: RAC Property Mappings
@@ -54,16 +56,13 @@ Next, you need to add a property mapping for each of the remote machines you wan
 
 4. Click **Finish** to save your settings and close the box.
 
-### Step 3. Create Endpoints for the Provider
+### Create Endpoints for the Provider
 
 Finally, you need to create an endpoint for each remote machine. Endpoints are defined within providers; connections between the remote machine and authentik are enabled through communication between the provider's endpoint and the remote machine.
 
-1. In the Admin interface navigate to **Applications -> Providers**.
-
+1. In the Admin interface navigate to **Applications > Providers**.
 2. Select the RAC provider you created in Step 1 above.
-
 3. On the Provider page, under **Endpoints**, click **Create**.
-
 4. On the **Create Endpoint** box, provide the following settings:
 
     - **Name**: define a name for the endpoint, perhaps include the type of connection (RDP, SSH, VNC)
